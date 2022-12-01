@@ -14,11 +14,11 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         boolean audioShouldBePlaying = getIntent().getBooleanExtra(HomeActivity.audioIntentDataName, true); // Music Plays By Default
-        audioHandler = new AudioHandler();
+        audioHandler = AudioHandler.getInstance();
         if(audioShouldBePlaying){
             audioHandler.play(getApplicationContext());
         } else {
-            audioHandler.stop();
+            //audioHandler.stop();
         }
 
         if(getSupportActionBar() != null){
@@ -30,12 +30,11 @@ public class GameActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        audioHandler.stop();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
+        audioHandler.stop();
     }
 }
