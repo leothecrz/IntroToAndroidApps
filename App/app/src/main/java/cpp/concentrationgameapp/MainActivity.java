@@ -12,8 +12,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //getActionBar().hide();
-
         new Handler().postDelayed(
             () -> {
                 Intent intent = new Intent(MainActivity.this, HomeActivity.class);
