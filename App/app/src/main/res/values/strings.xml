@@ -8,5 +8,15 @@
     <string name="home_High_Scores_Button">High Scores</string>
 
     <string name="home_Exit_Button">Exit</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="new_Game_Button">New Game</string>
+
+    <string name="end_Game_Button">End Game</string>
+
+    <string name="tryAgain_Button">Try Again</string>
+
+    <string name="onOffMusic">Toggle Sound</string>
 
 </resources>

@@ -11,6 +11,9 @@ import android.view.View.OnClickListener;
 
 public class HomeActivity extends AppCompatActivity {
 
+    public final static String audioIntentDataName = "audioShouldBeRunning";
+    private AudioHandler audioHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +22,9 @@ public class HomeActivity extends AppCompatActivity {
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();
         }
+
+        audioHandler = new AudioHandler();
+        audioHandler.play(getApplicationContext());
 
         Button homePlayButton = findViewById(R.id.homePlayButton);
         Button homeSettingsButton = findViewById(R.id.homeSettingsButton);
@@ -34,7 +40,16 @@ public class HomeActivity extends AppCompatActivity {
                 case (R.id.homePlayButton):{
 
                     Intent i = new Intent(getApplicationContext(), GameActivity.class);
+                    i.putExtra(audioIntentDataName, audioHandler.stop());
                     startActivity(i);
+                    break;
+                }
+                case (R.id.homeSettingsButton):{
+                    if(!audioHandler.stop()){
+                        audioHandler.play(getApplicationContext());
+                    } else {
+                        audioHandler.stop();
+                    }
                     break;
                 }
                 default:
@@ -53,10 +68,10 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        audioHandler.stop();
     }
+
 }
