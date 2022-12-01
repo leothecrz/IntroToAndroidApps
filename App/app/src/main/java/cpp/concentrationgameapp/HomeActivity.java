@@ -22,9 +22,17 @@ public class HomeActivity extends AppCompatActivity {
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();
         }
-
         audioHandler = new AudioHandler();
-        audioHandler.play(getApplicationContext());
+        if(savedInstanceState != null) {
+            boolean audiostate = savedInstanceState.getBoolean(audioIntentDataName, true);
+            if(audiostate){
+                audioHandler.play(getApplicationContext());
+            }else{
+                audioHandler.stop();
+            }
+        } else {
+            audioHandler.play(getApplicationContext());
+        }
 
         Button homePlayButton = findViewById(R.id.homePlayButton);
         Button homeSettingsButton = findViewById(R.id.homeSettingsButton);
@@ -74,4 +82,9 @@ public class HomeActivity extends AppCompatActivity {
         audioHandler.stop();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(HomeActivity.audioIntentDataName, audioHandler.stop());
+    }
 }
