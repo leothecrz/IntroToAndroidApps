@@ -12,13 +12,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+
+
         new Handler().postDelayed(
             () -> {
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
                 this.finish();
             }, 3000
         );
+
 
 
     }

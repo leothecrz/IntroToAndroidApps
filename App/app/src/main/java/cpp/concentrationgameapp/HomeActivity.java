@@ -16,6 +16,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        if(getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+
         Button homePlayButton = findViewById(R.id.homePlayButton);
         Button homeSettingsButton = findViewById(R.id.homeSettingsButton);
         Button homeExitButton = findViewById(R.id.homeExitButton);
@@ -28,13 +32,9 @@ public class HomeActivity extends AppCompatActivity {
                     break;
                 }
                 case (R.id.homePlayButton):{
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent i = new Intent(HomeActivity.this, GameActivity.class);
-                            startActivity(i);
-                        }
-                    });
+
+                    Intent i = new Intent(getApplicationContext(), GameActivity.class);
+                    startActivity(i);
                     break;
                 }
                 default:
@@ -45,6 +45,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
         homeExitButton.setOnClickListener(homeListener);
+        homePlayButton.setOnClickListener(homeListener);
+
+        homeSettingsButton.setOnClickListener(homeListener);
+        homeHighScoresButton.setOnClickListener(homeListener);
 
 
     }
