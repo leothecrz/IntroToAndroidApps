@@ -56,6 +56,11 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(i);
                     break;
                 }
+                case (R.id.homeHighScoresButton):{
+
+                    Intent i = new Intent(getApplicationContext(), HighScoreActivity.class);
+                    startActivity(i);
+                }
                 case (R.id.homeSettingsButton):{
 
                     if(!audioHandler.isRunningStatus()){
@@ -66,13 +71,13 @@ public class HomeActivity extends AppCompatActivity {
 
                     break;
                 }
-                default:
-                    System.out.println( view );
+                default: {
+                    System.out.println(view);
                     Log.e("homeListener Failure: ", view.toString());
                     break;
-
+                }
             }
-        };
+        }; // OnClickListener
 
         Button homePlayButton = findViewById(R.id.homePlayButton);
         Button homeSettingsButton = findViewById(R.id.homeSettingsButton);
@@ -95,15 +100,13 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
     }
-
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        if(!audioHandler.isRunningStatus()){
+        if(audioHandler.isRunningStatus()){
             wasAudioRunningBeforePause = false;
         } else {
             wasAudioRunningBeforePause = true;
@@ -111,7 +114,6 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
-
 
     @Override
     protected void onResume() {
@@ -124,7 +126,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        audioHandler.stop();
     }
 
     @Override

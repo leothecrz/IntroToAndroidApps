@@ -75,7 +75,7 @@ public class AudioHandler {
     }
 
     public boolean isRunningStatus(){
-        return (mediaPlayer != null);
+        return !(mediaPlayer == null);
     }
 
     public MediaPlayer getMediaPlayer(){
