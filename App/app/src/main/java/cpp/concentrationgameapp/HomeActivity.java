@@ -1,5 +1,7 @@
 package cpp.concentrationgameapp;
 
+import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +28,13 @@ public class HomeActivity extends AppCompatActivity {
                     break;
                 }
                 case (R.id.homePlayButton):{
-
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent i = new Intent(HomeActivity.this, GameActivity.class);
+                            startActivity(i);
+                        }
+                    });
                     break;
                 }
                 default:
