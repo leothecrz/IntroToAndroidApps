@@ -14,14 +14,12 @@ public class MainActivity extends AppCompatActivity {
 
         //getActionBar().hide();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        new Handler().postDelayed(
+            () -> {
                 Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                 startActivity(intent);
-            }
-        }, 3000);
-
+            }, 3000
+        );
 
 
 

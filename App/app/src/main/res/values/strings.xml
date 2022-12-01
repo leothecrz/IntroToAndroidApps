@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">ConcentrationGameApp</string>
+
+    <string name="home_Settings_Button">Settings</string>
+
+    <string name="home_Play_Button">Play</string>
+
+    <string name="home_High_Scores_Button">High Scores</string>
+
+    <string name="home_Exit_Button">Exit</string>
+
 </resources>
