@@ -1,5 +1,7 @@
 package cpp.concentrationgameapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.PlaybackParams;
@@ -10,6 +12,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 /**
  * Handles HomePanel Activities
@@ -50,9 +55,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 case (R.id.homePlayButton):{
 
-                    Intent i = new Intent(getApplicationContext(), GameActivity.class);
-                    //i.putExtra(audioIntentDataName, audioHandler.isRunningStatus());
-                    startActivity(i);
+                    showDialog();
                     break;
                 }
                 case (R.id.homeHighScoresButton):{
@@ -154,4 +157,47 @@ public class HomeActivity extends AppCompatActivity {
         outState.putInt("mediaStopTime", AudioHandler.mediaStopTime);
     }
 
+    private void showDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Play Concentration");
+        dialog.setMessage("How many tiles?");
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        TextView text = new TextView(this);
+        SeekBar seekBar = new SeekBar(this);
+        seekBar.setMax(8);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                text.setText(String.valueOf("      " + (4 + i * 2)));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        layout.addView(seekBar);
+
+        text.setText("      4"); // Padded string to make it look nicer
+        text.setPadding(10, 10, 10, 10);
+        layout.addView(text);
+
+        dialog.setView(layout);
+        dialog.setPositiveButton(android.R.string.ok, (d, id) -> {
+            Intent i = new Intent(getApplicationContext(), GameActivity.class);
+            startActivity(i);
+        });
+        dialog.setNegativeButton(android.R.string.cancel, (d, id) -> {
+            // Do nothing
+        });
+        dialog.show();
+    }
 }
