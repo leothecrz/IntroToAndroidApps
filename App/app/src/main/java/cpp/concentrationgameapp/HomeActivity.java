@@ -193,6 +193,7 @@ public class HomeActivity extends AppCompatActivity {
         dialog.setView(layout);
         dialog.setPositiveButton(android.R.string.ok, (d, id) -> {
             Intent i = new Intent(getApplicationContext(), GameActivity.class);
+            i.putExtra("tiles", 4 + seekBar.getProgress() * 2);
             startActivity(i);
         });
         dialog.setNegativeButton(android.R.string.cancel, (d, id) -> {

@@ -7,6 +7,7 @@ import android.os.Bundle;
 public class GameActivity extends AppCompatActivity {
 
     private AudioHandler audioHandler;
+    private int tileCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +18,8 @@ public class GameActivity extends AppCompatActivity {
         if(!audioHandler.isRunningStatus()){
             audioHandler.play(R.raw.testtrack2, getApplicationContext());
         }
+
+        tileCount = getIntent().getIntExtra("tiles", 4);
 
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();
