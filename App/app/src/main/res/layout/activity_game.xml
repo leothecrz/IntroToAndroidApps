@@ -7,21 +7,8 @@
     tools:context=".GameActivity">
 
 
-    <fragment
-        android:id="@+id/Game_Fragment"
-        android:name="cpp.concentrationgameapp.GameFragment"
-
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constrainedHeight="true"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintHeight_percent="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent=".75"
-        tools:layout="@layout/fragment_game" />
-
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout3"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#8F1A49"
@@ -30,8 +17,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="1"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/Game_Fragment"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent=".25">
@@ -76,7 +61,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent=".5"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent="1">
 
             <Button
@@ -102,8 +87,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/endGameButton"
                 app:layout_constraintVertical_bias="0.971" />
+
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
+
+    <TableLayout
+        android:id="@+id/cardTable"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
