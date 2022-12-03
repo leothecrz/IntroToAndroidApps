@@ -2,19 +2,20 @@ package cpp.concentrationgameapp;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 public class AudioHandler {
 
     private static AudioHandler audioHandler;
 
     private MediaPlayer mediaPlayer;
-    int mediaStopTime;
+    static int mediaStopTime;
 
     /**
      * Constructor
      */
     private AudioHandler(){
-        int mediaStopTime = 0;
+
     }
 
     /**
@@ -30,13 +31,15 @@ public class AudioHandler {
 
     /**
      * Releases the media player resource.
-     * @return True if the mediaplayer was active and it was released. False if it fails.
+     * @return True if the mediaplayer was active AND it was released. False otherwise.
      */
     public boolean stop(){
         if(mediaPlayer != null){
 
             mediaPlayer.pause();
             mediaStopTime = mediaPlayer.getCurrentPosition();
+
+            Log.i("AudioHandlerInformation", String.valueOf(mediaStopTime));
 
             mediaPlayer.release();
             mediaPlayer = null;
@@ -46,6 +49,10 @@ public class AudioHandler {
         }
     }
 
+    /**
+     * Default Play the test track in the res/raw.
+     * @param c
+     */
     public void play(Context c){
 
         if(mediaPlayer != null){
@@ -58,6 +65,55 @@ public class AudioHandler {
         mediaPlayer.start();
     }
 
+    /**
+     * Play the track with the ID = musicID in res/raw.
+     * @param musicID
+     * @param c
+     */
+    public void play(int musicID, Context c){
+
+        if(mediaPlayer != null){
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+        mediaPlayer = MediaPlayer.create(c, musicID);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+    }
+
+    /**
+     * Play the track with the ID = musicID in res/raw.
+     * Skip to position in the track.
+     * @param musicID
+     * @param c
+     * @param position
+     */
+    public void play(int musicID, Context c, int position){
+
+        if(mediaPlayer != null){
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+        mediaPlayer = MediaPlayer.create(c, musicID);
+        mediaPlayer.setLooping(true);
+
+        Log.i("AudioHandlerInformation", "Position - D: " + String.valueOf(mediaPlayer.getDuration()) + "P: " + String.valueOf(position) );
+        if(position <  mediaPlayer.getDuration()) {
+            mediaPlayer.seekTo(position);
+        }
+
+        mediaPlayer.start();
+    }
+
+
+    /**
+     * Default Play the test track in the res/raw.
+     * skip to position in the track.
+     * @param c
+     * @param position
+     */
     public void play(Context c, int position){
 
         if(mediaPlayer != null){
@@ -74,10 +130,18 @@ public class AudioHandler {
         mediaPlayer.start();
     }
 
+    /**
+     * Get the status of the audioHandler.
+     * When running will return true.
+     * @return
+     */
     public boolean isRunningStatus(){
         return !(mediaPlayer == null);
     }
 
+    /**
+     * @return
+     */
     public MediaPlayer getMediaPlayer(){
         return this.mediaPlayer;
     }

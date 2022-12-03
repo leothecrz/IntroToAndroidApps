@@ -6,6 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.concurrent.Executor;
+
+/**
+ * Entry Point Into Program
+ * Splash is unnecessary but potential to increase the app's looks
+ *
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -16,10 +23,14 @@ public class MainActivity extends AppCompatActivity {
         View systemView = getWindow().getDecorView();
         systemView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
+        //Remove ActionBar
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();
         }
 
+        //Continue to next Activity: HomeActivity.
+
+        //Memory Leak?? - Splash Not Required
         new Handler().postDelayed(
             () -> {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
@@ -27,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
                 this.finish();
             }, 3000
         );
-
-
-
     }
 
 }

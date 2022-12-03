@@ -11,38 +11,37 @@ import android.util.Log;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 
-
+/**
+ * Handles HomePanel Activities
+ * 2nd Activity
+ *
+ */
 public class HomeActivity extends AppCompatActivity {
 
-    public final static String audioIntentDataName = "audioShouldBeRunning";
     private AudioHandler audioHandler;
-
     private boolean wasAudioRunningBeforePause;
-
-
-
+    private Boolean audioSavedInstanceShouldBeRunning;
+    private int mediaStopTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        //Action Bar Removal
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();
         }
 
+        //Audio Initialization
         audioHandler = AudioHandler.getInstance();
-        if(savedInstanceState != null) {
-            boolean audioState = savedInstanceState.getBoolean(audioIntentDataName, true);
-            if(audioState){
-                audioHandler.play(getApplicationContext());
-            }else{
-                audioHandler.stop();
-            }
-        } else {
-            audioHandler.play(getApplicationContext());
+        if(savedInstanceState != null) { // Saved Instance Extra Setup
+            audioSavedInstanceShouldBeRunning = savedInstanceState.getBoolean("audioShouldBeRunning", false);
+            mediaStopTime = savedInstanceState.getInt("mediaStopTime", 0);
         }
+        wasAudioRunningBeforePause = true;
 
+        //Control Over Home Window Buttons
         OnClickListener homeListener = view -> {
             switch (view.getId()){
                 case (R.id.homeExitButton):{
@@ -52,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
                 case (R.id.homePlayButton):{
 
                     Intent i = new Intent(getApplicationContext(), GameActivity.class);
-                    i.putExtra(audioIntentDataName, audioHandler.isRunningStatus());
+                    //i.putExtra(audioIntentDataName, audioHandler.isRunningStatus());
                     startActivity(i);
                     break;
                 }
@@ -94,19 +93,32 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onResume() {
+        super.onResume();
+
+        //AudioResume
+        if(wasAudioRunningBeforePause){
+            audioHandler.play(getApplicationContext());
+        }
+        if(audioSavedInstanceShouldBeRunning != null){
+            if(audioSavedInstanceShouldBeRunning){
+                audioHandler.play(getApplicationContext(), mediaStopTime);
+            } else {
+                audioHandler.stop();
+            }
+            audioSavedInstanceShouldBeRunning = null;
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        if(audioHandler.isRunningStatus()){
+        //AudioPause
+        if(!audioHandler.isRunningStatus()){
             wasAudioRunningBeforePause = false;
         } else {
             wasAudioRunningBeforePause = true;
@@ -116,11 +128,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if(wasAudioRunningBeforePause){
-            audioHandler.play(getApplicationContext());
-        }
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override
@@ -129,13 +138,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(HomeActivity.audioIntentDataName, audioHandler.isRunningStatus());
+    protected void onRestart() {
+        super.onRestart();
     }
 
     @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if(audioHandler.isRunningStatus() && wasAudioRunningBeforePause){ // Pre-Pause
+            outState.putBoolean("audioShouldBeRunning", true);
+        } else { // Post-Pause
+            outState.putBoolean("audioShouldBeRunning", wasAudioRunningBeforePause);
+        }
+        outState.putInt("mediaStopTime", AudioHandler.mediaStopTime);
     }
+
 }
