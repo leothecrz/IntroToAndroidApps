@@ -97,8 +97,12 @@ public class HighScoreTable {
         return true;
     }
 
+    public HighScore[] getHighScores(int index, boolean isTileCount) {
+        return highScores[isTileCount ? tileCountToIndex(index) : index];
+    }
+
     public void clear() {
-        highScores = new HighScore[9][5];
+        highScores = new HighScore[9][3];
     }
 
     private void save() {
@@ -129,7 +133,7 @@ public class HighScoreTable {
         return -1;
     }
 
-    private int tileCountToIndex(int tileCount) {
+    public int tileCountToIndex(int tileCount) {
         return (tileCount - 4) / 2;
     }
 }
