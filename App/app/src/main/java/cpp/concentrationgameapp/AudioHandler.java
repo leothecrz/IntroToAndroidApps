@@ -10,6 +10,7 @@ public class AudioHandler {
 
     private MediaPlayer mediaPlayer;
     static int mediaStopTime;
+    private boolean enabled;
 
     /**
      * Constructor
@@ -71,6 +72,8 @@ public class AudioHandler {
      * @param c
      */
     public void play(int musicID, Context c){
+        if (!enabled)
+            return;
 
         if(mediaPlayer != null){
             mediaPlayer.release();
@@ -90,6 +93,8 @@ public class AudioHandler {
      * @param position
      */
     public void play(int musicID, Context c, int position){
+        if (!enabled)
+            return;
 
         if(mediaPlayer != null){
             mediaPlayer.release();
@@ -115,6 +120,8 @@ public class AudioHandler {
      * @param position
      */
     public void play(Context c, int position){
+        if (!enabled)
+            return;
 
         if(mediaPlayer != null){
             mediaPlayer.release();
@@ -146,4 +153,11 @@ public class AudioHandler {
         return this.mediaPlayer;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }
