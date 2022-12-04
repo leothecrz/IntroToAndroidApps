@@ -68,8 +68,10 @@ public class HomeActivity extends AppCompatActivity {
                 case (R.id.homeSettingsButton):{
 
                     if(!audioHandler.isRunningStatus()){
+                        audioHandler.setEnabled(true);
                         audioHandler.play(getApplicationContext());
                     } else {
+                        audioHandler.setEnabled(false);
                         audioHandler.stop();
                     }
 
