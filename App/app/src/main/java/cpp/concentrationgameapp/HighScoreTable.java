@@ -22,8 +22,8 @@ public class HighScoreTable {
     private File highScoresFile;
 
     private HighScoreTable() {
-        // 5 high scores for each tile count (4, 6, 8, 10, ... 20)
-        highScores = new HighScore[9][5];
+        // 3 high scores for each tile count (4, 6, 8, 10, ... 20)
+        highScores = new HighScore[9][3];
     }
 
     public static HighScoreTable getInstance() {
@@ -66,7 +66,7 @@ public class HighScoreTable {
         if (index != -1) {
             return true;
         } else {
-            return score > highScores[tileCountToIndex(tileCount)][4].getScore();
+            return score > highScores[tileCountToIndex(tileCount)][2].getScore();
         }
     }
 
@@ -78,13 +78,13 @@ public class HighScoreTable {
 
         // Find index to insert score into
         int tileIndex = tileCountToIndex(tileCount);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             if (highScores[tileIndex][i] == null) {
                 highScores[tileIndex][i] = highScore;
                 break;
             }
             if (score > highScores[tileIndex][i].getScore()) {
-                for (int x = 4; x > i; x--) {
+                for (int x = 2; x > i; x--) {
                     highScores[tileIndex][x] = highScores[tileIndex][x - 1];
                     highScores[tileIndex][x - 1] = null;
                 }
@@ -122,7 +122,7 @@ public class HighScoreTable {
 
     private int getFirstNullIndex(int tileCount) {
         int index = tileCountToIndex(tileCount);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             if (highScores[index][i] == null)
                 return i;
         }
