@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import android.widget.TableRow;
  * Use the {@link GameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GameFragment extends Fragment {
+public class GameFragment extends Fragment implements CardFragment.OnCardClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,6 +99,7 @@ public class GameFragment extends Fragment {
 
                 for (int x = 0; x < 4; x++) {
                     CardFragment cardFragment = CardFragment.newCard("Card " + i + " " + x);
+                    cardFragment.setClickListener(this);
                     getChildFragmentManager().beginTransaction()
                             .add(row.getId(), cardFragment, "Card " + i + " " + x)
                             .commit();
@@ -106,6 +108,11 @@ public class GameFragment extends Fragment {
                 cardGrid.addView(row);
             }
         }
+    }
 
+    @Override
+    public void onCardClick(CardFragment fragment) {
+        Log.i("cpp_concentration", fragment.getWord());
+        fragment.flip();
     }
 }

@@ -15,6 +15,7 @@ public class CardFragment extends Fragment implements View.OnClickListener {
     private TextView textView;
     private ImageView cardBack;
     private boolean flipped;
+    private OnCardClickListener clickListener;
 
     public static CardFragment newCard(String word) {
         CardFragment cardFragment = new CardFragment();
@@ -40,13 +41,17 @@ public class CardFragment extends Fragment implements View.OnClickListener {
         textView = view.findViewById(R.id.word);
         textView.setText(word);
         cardBack = view.findViewById(R.id.cardBack);
-        getView().setOnClickListener(this);
+        view.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        System.out.println(word);
-        flip();
+        if (clickListener != null)
+            clickListener.onCardClick(this);
+    }
+
+    public void setClickListener(OnCardClickListener listener) {
+        this.clickListener = listener;
     }
 
     public boolean isFlipped() {
@@ -62,5 +67,13 @@ public class CardFragment extends Fragment implements View.OnClickListener {
             textView.setVisibility(View.VISIBLE);
         }
         flipped = !flipped;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public interface OnCardClickListener {
+        void onCardClick(CardFragment fragment);
     }
 }
