@@ -1,13 +1,10 @@
 package cpp.concentrationgameapp;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.media.PlaybackParams;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -150,7 +147,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         if(audioHandler.isRunningStatus() && wasAudioRunningBeforePause){ // Pre-Pause
@@ -175,7 +172,7 @@ public class HomeActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                text.setText(String.valueOf("      " + (4 + i * 2)));
+                text.setText("      " + (4 + i * 2));
             }
 
             @Override
