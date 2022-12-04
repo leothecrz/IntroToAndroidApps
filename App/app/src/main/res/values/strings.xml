@@ -20,5 +20,9 @@
     <string name="onOffMusic">Toggle Music</string>
 
     <string name="HomeLogoDescription">Concentration. The Logo for the application displayed on the home scree.</string>
+    <string name="tile_count">Tile count:</string>
+    <string name="high_score_1">1. Score 1 - 8</string>
+    <string name="high_score_2">2. Score 2 - 6</string>
+    <string name="high_score_3">3. Score 3 - 4</string>
 
 </resources>

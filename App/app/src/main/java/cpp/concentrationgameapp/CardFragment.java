@@ -1,5 +1,6 @@
 package cpp.concentrationgameapp;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -60,11 +61,13 @@ public class CardFragment extends Fragment implements View.OnClickListener {
 
     public void flip() {
         if (flipped) {
-            cardBack.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.INVISIBLE);
+            cardBack.setAlpha(1.0f);
         } else {
-            cardBack.setVisibility(View.INVISIBLE);
-            textView.setVisibility(View.VISIBLE);
+            ObjectAnimator animator = ObjectAnimator.ofFloat(cardBack, "alpha",
+                    1.0f, 0.0f);
+            animator.setDuration(250);
+            animator.start();
+
         }
         flipped = !flipped;
     }
