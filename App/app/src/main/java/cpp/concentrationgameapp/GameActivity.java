@@ -5,13 +5,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.TableLayout;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TableRow;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
     private AudioHandler audioHandler;
+    private Button tryAgainButton;
+    private Button endGameButton;
+    private Button newGameButton;
 
     private int tileCount;
 
@@ -24,6 +27,13 @@ public class GameActivity extends AppCompatActivity {
         if(!audioHandler.isRunningStatus()){
             audioHandler.play(R.raw.testtrack2, getApplicationContext());
         }
+        tryAgainButton = findViewById(R.id.tryAgainButton);
+        endGameButton = findViewById(R.id.endGameButton);
+        newGameButton = findViewById(R.id.newGameButton);
+
+        tryAgainButton.setOnClickListener(this);
+        endGameButton.setOnClickListener(this);
+        newGameButton.setOnClickListener(this);
 
         tileCount = getIntent().getIntExtra("tiles", 4);
 
@@ -65,12 +75,31 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        exitDialog();
+    }
+
+    public void exitDialog() {
         new AlertDialog.Builder(this)
-            .setTitle("Exit Game")
-            .setMessage("Are you sure you want to exit the game?")
-            .setPositiveButton(android.R.string.yes, (dialog, button) -> {
-                GameActivity.super.onBackPressed();
-            })
-            .setNegativeButton(android.R.string.no, null).show();
+                .setTitle("Exit Game")
+                .setMessage("Are you sure you want to exit the game?")
+                .setPositiveButton(android.R.string.yes, (dialog, button) -> {
+                    GameActivity.super.onBackPressed();
+                })
+                .setNegativeButton(android.R.string.no, null).show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tryAgainButton:
+                Log.i("cpp_concentration", "tryAgainButton pressed");
+                break;
+            case R.id.endGameButton:
+                exitDialog();
+                break;
+            case R.id.newGameButton:
+                Log.i("cpp_concentration", "newGameButton pressed");
+                break;
+        }
     }
 }
