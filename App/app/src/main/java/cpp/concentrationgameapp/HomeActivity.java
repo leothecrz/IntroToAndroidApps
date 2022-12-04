@@ -57,11 +57,13 @@ public class HomeActivity extends AppCompatActivity {
 
                     showDialog();
                     break;
+
                 }
                 case (R.id.homeHighScoresButton):{
 
                     Intent i = new Intent(getApplicationContext(), HighScoreActivity.class);
                     startActivity(i);
+                    break;
                 }
                 case (R.id.homeSettingsButton):{
 
