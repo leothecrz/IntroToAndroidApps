@@ -19,4 +19,6 @@
 
     <string name="onOffMusic">Toggle Music</string>
 
+    <string name="HomeLogoDescription">Concentration. The Logo for the application displayed on the home scree.</string>
+
 </resources>
