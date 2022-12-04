@@ -44,4 +44,8 @@ public class HighScore {
     public int getScore() {
         return score;
     }
+
+    public int getTileCount() {
+        return tileCount;
+    }
 }

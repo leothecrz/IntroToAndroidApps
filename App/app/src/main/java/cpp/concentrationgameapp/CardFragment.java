@@ -49,6 +49,10 @@ public class CardFragment extends Fragment implements View.OnClickListener {
         flip();
     }
 
+    public boolean isFlipped() {
+        return flipped;
+    }
+
     public void flip() {
         if (flipped) {
             cardBack.setVisibility(View.VISIBLE);
@@ -58,7 +62,5 @@ public class CardFragment extends Fragment implements View.OnClickListener {
             textView.setVisibility(View.VISIBLE);
         }
         flipped = !flipped;
-
-
     }
 }

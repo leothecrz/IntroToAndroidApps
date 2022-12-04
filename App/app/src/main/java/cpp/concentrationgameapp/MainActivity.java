@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
+        // Initialize high score table
+        HighScoreTable.getInstance().init(getApplicationContext());
+
         //Continue to next Activity: HomeActivity.
 
         //Memory Leak?? - Splash Not Required
