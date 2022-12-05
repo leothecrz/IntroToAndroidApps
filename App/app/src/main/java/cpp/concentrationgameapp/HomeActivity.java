@@ -59,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
                 case (R.id.homeHighScoresButton):{
                     // Start high scores activity
                     Intent i = new Intent(getApplicationContext(), HighScoreActivity.class);
+                    i.putExtra("musicPlaying", audioHandler.isRunningStatus());
                     startActivity(i);
                     break;
                 }

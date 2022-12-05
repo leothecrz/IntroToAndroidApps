@@ -3,6 +3,8 @@ package cpp.concentrationgameapp;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,11 +20,16 @@ public class HighScoreActivity extends AppCompatActivity implements
     private TextView highScore1;
     private TextView highScore2;
     private TextView highScore3;
+    private AudioHandler audioHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
+
+        audioHandler = AudioHandler.getInstance();
+
+
 
         tileDropdown = findViewById(R.id.tile_dropdown); // Tile dropdown menu
         ArrayAdapter<String> tileAdapter = new ArrayAdapter<>(
@@ -48,6 +55,25 @@ public class HighScoreActivity extends AppCompatActivity implements
         if (actionBar != null)
             //actionBar.setTitle("High Scores");
             actionBar.hide();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(audioHandler.isRunningStatus()){
+            audioHandler.stop();
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if ( getIntent().getBooleanExtra("musicPlaying", false) ){
+            audioHandler.play(R.raw.testtrack3, getApplicationContext());
+        }
+
     }
 
     @Override
