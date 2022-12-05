@@ -6,15 +6,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class HighScoreActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class HighScoreActivity extends AppCompatActivity implements
+        AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private Spinner tileDropdown;
     private TextView highScore1;
     private TextView highScore2;
     private TextView highScore3;
+    private Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,8 @@ public class HighScoreActivity extends AppCompatActivity implements AdapterView.
         tileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tileDropdown.setAdapter(tileAdapter);
         tileDropdown.setOnItemSelectedListener(this);
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(this);
 
         highScore1 = findViewById(R.id.high_score_1);
         highScore2 = findViewById(R.id.high_score_2);
@@ -81,5 +86,10 @@ public class HighScoreActivity extends AppCompatActivity implements AdapterView.
             default:
                 return null;
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        finish();
     }
 }

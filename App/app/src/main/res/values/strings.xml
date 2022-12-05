@@ -25,5 +25,9 @@
     <string name="high_score_2">2. Score 2 - 6</string>
     <string name="high_score_3">3. Score 3 - 4</string>
     <string name="teamName">Team Goofy Goobers</string>
+    <string name="back">Back</string>
+    <string name="tile_count2">Tile count</string>
+    <string name="card_back">Card back</string>
+    <string name="card_background">Card background</string>
 
 </resources>
