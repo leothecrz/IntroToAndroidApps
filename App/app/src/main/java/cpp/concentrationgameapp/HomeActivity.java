@@ -172,7 +172,7 @@ public class HomeActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                text.setText("      " + (4 + i * 2));
+                text.setText("      " + (4 + i * 2) + " tiles");
             }
 
             @Override
@@ -187,7 +187,7 @@ public class HomeActivity extends AppCompatActivity {
         });
         layout.addView(seekBar);
 
-        text.setText("      4"); // Padded string to make it look nicer
+        text.setText("      4 tiles"); // Padded string to make it look nicer
         text.setPadding(10, 10, 10, 10);
         layout.addView(text);
 

@@ -6,13 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -147,7 +150,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 exitDialog();
                 break;
             case R.id.newGameButton:
-                Log.i("cpp_concentration", "newGameButton pressed");
+                showDialog();
                 break;
             case R.id.toggleSoundButton:
                 if (!audioHandler.isRunningStatus()) {
@@ -294,5 +297,49 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             cardList.get(i * 2).setWord(wordList.get(i));
             cardList.get(i * 2 + 1).setWord(wordList.get(i));
         }
+    }
+
+    private void showDialog() {
+        android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(this);
+        dialog.setTitle("New Game");
+        dialog.setMessage("How many tiles?");
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        TextView text = new TextView(this);
+        SeekBar seekBar = new SeekBar(this);
+        seekBar.setMax(8);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                text.setText("      " + (4 + i * 2) + " tiles");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        layout.addView(seekBar);
+
+        text.setText("      4 tiles"); // Padded string to make it look nicer
+        text.setPadding(10, 10, 10, 10);
+        layout.addView(text);
+
+        dialog.setView(layout);
+        dialog.setPositiveButton(android.R.string.ok, (d, id) -> {
+            tileCount = 4 + seekBar.getProgress() * 2;
+            initGame();
+        });
+        dialog.setNegativeButton(android.R.string.cancel, (d, id) -> {
+            // Do nothing
+        });
+        dialog.show();
     }
 }
