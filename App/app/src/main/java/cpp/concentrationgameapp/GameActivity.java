@@ -14,6 +14,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class GameActivity extends AppCompatActivity implements View.OnClickListener, CardFragment.OnCardClickListener {
 
     // Keep words under 7 letters
@@ -162,12 +167,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void initGame() {
+        // Reset visibility
         for (LinearLayout row : rows)
             row.setVisibility(View.VISIBLE);
         for (FragmentContainerView[] cardContainers : cardContainers)
             for (FragmentContainerView container : cardContainers)
                 container.setVisibility(View.VISIBLE);
 
+        // Set visibility of cards based on tile count
         switch (tileCount) {
             case 4:
                 // x x
@@ -268,6 +275,24 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 // x x x x
                 // x x x x
                 break;
+        }
+
+        // Set word for each card
+        List<String> wordList = Arrays.asList(WORDS);
+        List<CardFragment> cardList = new ArrayList<>(); // List of visible cards
+        for (int i = 0; i < 5; i++) {
+            if (rows[i].getVisibility() == View.GONE)
+                continue;
+            for (int x = 0; x < 4; x++)
+                if (cardContainers[i][x].getVisibility() == View.VISIBLE)
+                    cardList.add(cards[i][x]);
+        }
+
+        Collections.shuffle(wordList);
+        Collections.shuffle(cardList);
+        for (int i = 0; i < cardList.size() / 2; i++) {
+            cardList.get(i * 2).setWord(wordList.get(i));
+            cardList.get(i * 2 + 1).setWord(wordList.get(i));
         }
     }
 }

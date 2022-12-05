@@ -18,22 +18,15 @@ public class CardFragment extends Fragment implements View.OnClickListener {
     private boolean flipped;
     private OnCardClickListener clickListener;
 
-    public static CardFragment newCard(String word) {
-        CardFragment cardFragment = new CardFragment();
-        Bundle args = new Bundle();
-        args.putString("word", word);
-        cardFragment.setArguments(args);
-        return cardFragment;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Bundle args = getArguments();
-//        word = args.getString("word");
-        word = "Hello world!";
-        System.out.println(getId());
-
         return inflater.inflate(R.layout.card_fragment, container, false);
     }
 
@@ -75,6 +68,10 @@ public class CardFragment extends Fragment implements View.OnClickListener {
 
     public String getWord() {
         return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public interface OnCardClickListener {
