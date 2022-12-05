@@ -72,6 +72,8 @@ public class CardFragment extends Fragment implements View.OnClickListener {
 
     public void setWord(String word) {
         this.word = word;
+        if (textView != null)
+            textView.setText(word);
     }
 
     public interface OnCardClickListener {

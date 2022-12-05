@@ -176,6 +176,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         for (FragmentContainerView[] cardContainers : cardContainers)
             for (FragmentContainerView container : cardContainers)
                 container.setVisibility(View.VISIBLE);
+        for (CardFragment[] cardFragments : cards) {
+            for (CardFragment card : cardFragments) {
+                if (card.isFlipped())
+                    card.flip();
+            }
+        }
 
         // Set visibility of cards based on tile count
         switch (tileCount) {
