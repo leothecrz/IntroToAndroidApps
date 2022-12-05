@@ -35,4 +35,6 @@
     <string name="score_label">Score: %1d</string>
     <string name="tile_count_dialog">"      %1d tiles"</string>
 
+    <string name="highscoreTittle"> The Leaderboard </string>
+
 </resources>

@@ -46,7 +46,8 @@ public class HighScoreActivity extends AppCompatActivity implements
         // Set action bar title
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
-            actionBar.setTitle("High Scores");
+            //actionBar.setTitle("High Scores");
+            actionBar.hide();
     }
 
     @Override
