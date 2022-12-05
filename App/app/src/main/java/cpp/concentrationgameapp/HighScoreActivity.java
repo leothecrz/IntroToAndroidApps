@@ -1,14 +1,18 @@
 package cpp.concentrationgameapp;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class HighScoreActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, View.OnClickListener {
@@ -18,6 +22,7 @@ public class HighScoreActivity extends AppCompatActivity implements
     private TextView highScore2;
     private TextView highScore3;
     private Button backButton;
+    private Button resetButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +40,9 @@ public class HighScoreActivity extends AppCompatActivity implements
         tileDropdown.setAdapter(tileAdapter);
         tileDropdown.setOnItemSelectedListener(this);
         backButton = findViewById(R.id.backButton);
+        resetButton = findViewById(R.id.resetButton);
         backButton.setOnClickListener(this);
+        resetButton.setOnClickListener(this);
 
         highScore1 = findViewById(R.id.high_score_1);
         highScore2 = findViewById(R.id.high_score_2);
@@ -49,25 +56,7 @@ public class HighScoreActivity extends AppCompatActivity implements
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        HighScore[] scores = HighScoreTable.getInstance().getHighScores(i, false);
 
-        if (scores[0] == null) {
-            // No high scores for the given tile count
-            highScore1.setText("No high scores.");
-            highScore2.setVisibility(View.GONE);
-            highScore3.setVisibility(View.GONE);
-            return;
-        }
-
-        // Set text for each score TextView until it reaches an empty score
-        for (int x = 0; x < scores.length; x++) {
-            HighScore score = scores[x];
-            TextView scoreView = getHighScoreView(x);
-            scoreView.setVisibility(View.VISIBLE);
-            scoreView.setText((x + 1) + ". " + (score != null
-                    ? (score.getName() + " - " + score.getScore())
-                    : "[empty]"));
-        }
     }
 
     @Override
@@ -90,6 +79,50 @@ public class HighScoreActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
-        finish();
+        switch (v.getId()) {
+            case R.id.backButton:
+                finish();
+                break;
+            case R.id.resetButton:
+                resetDialog();
+                break;
+        }
+
+    }
+
+    private void updateTextViews(int i) {
+        HighScore[] scores = HighScoreTable.getInstance().getHighScores(i, false);
+
+        if (scores[0] == null) {
+            // No high scores for the given tile count
+            highScore1.setText("No high scores.");
+            highScore2.setVisibility(View.GONE);
+            highScore3.setVisibility(View.GONE);
+            return;
+        }
+
+        // Set text for each score TextView until it reaches an empty score
+        for (int x = 0; x < scores.length; x++) {
+            HighScore score = scores[x];
+            TextView scoreView = getHighScoreView(x);
+            scoreView.setVisibility(View.VISIBLE);
+            scoreView.setText((x + 1) + ". " + (score != null
+                    ? (score.getName() + " - " + score.getScore())
+                    : "[empty]"));
+        }
+    }
+
+    private void resetDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Reset scores");
+        dialog.setMessage("Are you sure you want to reset all high scores?");
+
+        dialog.setPositiveButton(android.R.string.yes, (d, id) -> {
+            HighScoreTable.getInstance().clear();
+            updateTextViews(tileDropdown.getSelectedItemPosition());
+        });
+        dialog.setNegativeButton(android.R.string.no, (d, id) -> {});
+
+        dialog.show();
     }
 }

@@ -29,5 +29,6 @@
     <string name="tile_count2">Tile count</string>
     <string name="card_back">Card back</string>
     <string name="card_background">Card background</string>
+    <string name="reset">Reset</string>
 
 </resources>
