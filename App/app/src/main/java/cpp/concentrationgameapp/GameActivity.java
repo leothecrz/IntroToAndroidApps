@@ -1,14 +1,22 @@
 package cpp.concentrationgameapp;
 
+import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.DialogInterface;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +58,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private TextView scoreDisplay;
 
     private int tileCount;
+    private int score;
+    private boolean disableFlip;
+    private boolean showedTryAgainToast;
+    private CardFragment card1; // First flipped card
+    private CardFragment card2; // Second flipped card
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,34 +118,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         audioHandler.stop();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -153,7 +142,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tryAgainButton:
-                Log.i("cpp_concentration", "tryAgainButton pressed");
+                tryAgainButton.setEnabled(false);
+                card1.flip();
+                card2.flip();
+                card1 = null;
+                card2 = null;
+                disableFlip = false;
                 break;
             case R.id.endGameButton:
                 exitDialog();
@@ -175,6 +169,54 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onCardClick(CardFragment fragment) {
+        if (disableFlip || !fragment.isFlippable())
+            return;
+
+        if (card1 == null) {
+            // First card was clicked
+            card1 = fragment;
+        } else if (card2 == null && card1 != fragment) {
+            // Second card was clicked
+            card2 = fragment;
+
+            // Check for a match
+            boolean isMatch = card1.getWord().equals(card2.getWord());
+            int textAnimColor; // Used for text color animation
+            if (isMatch) {
+                setScore(score + 2);
+                textAnimColor = 0xFF00FF00;
+                card1.setFlippable(false);
+                card2.setFlippable(false);
+                card1 = null;
+                card2 = null;
+
+                if (checkPlayerWon()) {
+                    Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if (score > 0)
+                    setScore(score - 1);
+                textAnimColor = 0xFFFF0000;
+
+                // Temporarily prevent player from flipping another card until try again is pressed
+                disableFlip = true;
+                tryAgainButton.setEnabled(true);
+                if (!showedTryAgainToast) {
+                    Toast.makeText(this,
+                            "Incorrect pair! Press the try again button to try again.",
+                            Toast.LENGTH_SHORT).show();
+                    showedTryAgainToast = true;
+                }
+            }
+
+            // Text color animation
+            scoreDisplay.setTextColor(textAnimColor);
+            ObjectAnimator animator = ObjectAnimator.ofArgb(scoreDisplay, "textColor",
+                    textAnimColor, 0xFFFFFFFF);
+            animator.setDuration(3000);
+            animator.start();
+        }
+
         fragment.flip();
     }
 
@@ -185,12 +227,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         for (FragmentContainerView[] cardContainers : cardContainers)
             for (FragmentContainerView container : cardContainers)
                 container.setVisibility(View.VISIBLE);
-        for (CardFragment[] cardFragments : cards) {
+        for (CardFragment[] cardFragments : cards)
             for (CardFragment card : cardFragments) {
+                card.setFlippable(true);
                 if (card.isFlipped())
                     card.flip();
             }
-        }
+        card1 = null;
+        card2 = null;
 
         // Set visibility of cards based on tile count
         switch (tileCount) {
@@ -315,6 +359,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             cardList.get(i * 2).setWord(wordList.get(i));
             cardList.get(i * 2 + 1).setWord(wordList.get(i));
         }
+
+        // Reset score
+        setScore(0);
     }
 
     private void showDialog() {
@@ -359,5 +406,30 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             // Do nothing
         });
         dialog.show();
+    }
+
+    private void setScore(int score) {
+        this.score = score;
+        scoreDisplay.setText("Score: " + score);
+    }
+
+    private boolean checkPlayerWon() {
+        // Get list of all visible cards
+        List<CardFragment> cardList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            if (rows[i].getVisibility() == View.GONE)
+                continue;
+            for (int x = 0; x < 4; x++)
+                if (cardContainers[i][x].getVisibility() == View.VISIBLE)
+                    cardList.add(cards[i][x]);
+        }
+
+        // Flippable card = player has not won
+        for (CardFragment card : cardList)
+            if (card.isFlippable())
+                return false;
+
+        // None of the cards can be flipped; player won
+        return true;
     }
 }

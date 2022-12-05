@@ -20,6 +20,7 @@ public class CardFragment extends Fragment implements View.OnClickListener {
     private ImageView cardBack;
     private ImageView cardBackground;
     private boolean flipped;
+    private boolean flippable;
     private OnCardClickListener clickListener;
 
     @Override
@@ -67,7 +68,6 @@ public class CardFragment extends Fragment implements View.OnClickListener {
                     1.0f, 0.0f);
             animator.setDuration(250);
             animator.start();
-
         }
         flipped = !flipped;
     }
@@ -82,9 +82,12 @@ public class CardFragment extends Fragment implements View.OnClickListener {
             textView.setText(word);
     }
 
-    public void rotate(float rotation) {
-        cardBack.setRotation(rotation);
-        cardBackground.setRotation(rotation);
+    public boolean isFlippable() {
+        return flippable;
+    }
+
+    public void setFlippable(boolean flippable) {
+        this.flippable = flippable;
     }
 
     @Override
