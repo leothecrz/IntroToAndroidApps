@@ -155,7 +155,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
             runningInPreviousSavedInstance = null;
         }
-
     }
 
     @Override
@@ -222,7 +221,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 exitDialog();
                 break;
             case R.id.newGameButton:
-                showDialog();
+                tileDialog();
                 break;
             case R.id.toggleSoundButton:
                 if (!audioHandler.isRunningStatus()) {
@@ -267,7 +266,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 if (checkPlayerWon()) {
                     Toast.makeText(this, getResources().getString(R.string.you_won),
                             Toast.LENGTH_LONG).show();
-                    highScoreDialog();
+                    if (HighScoreTable.getInstance().isHighScore(tileCount, score))
+                        highScoreDialog();
+                    else
+                        newGameDialog("You won!");
                 }
             } else {
                 if (score > 0)
@@ -473,23 +475,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             input.setInputType(InputType.TYPE_CLASS_TEXT);
             dialog.setView(input);
 
-            dialog.setPositiveButton(android.R.string.ok, (d, id) -> {
+            dialog.setPositiveButton("Submit", (d, id) -> {
                 String name = input.getText().toString();
                 boolean res = highScoreTable.addHighScore(name, tileCount, score);
-                if (res)
-                    Toast.makeText(this, "Added high score!", Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(this, "Failed to add high score.", Toast.LENGTH_LONG).show();
+                newGameDialog(res ? "High score added" : "Failed to add high score");
             });
-            dialog.setNegativeButton(android.R.string.cancel, (d, id) -> {});
+            dialog.setNegativeButton(android.R.string.cancel, (d, id) -> {
+                newGameDialog("New game");
+            });
 
             dialog.show();
         }
     }
 
-    private void showDialog() {
+    private void tileDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("New Game");
+        dialog.setTitle("Play Concentration");
         dialog.setMessage("How many tiles?");
 
         LinearLayout layout = new LinearLayout(this);
@@ -522,11 +523,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         layout.addView(text);
 
         dialog.setView(layout);
-        dialog.setPositiveButton(android.R.string.ok, (d, id) -> {
+        dialog.setPositiveButton("Play", (d, id) -> {
             tileCount = 4 + seekBar.getProgress() * 2;
             initGame();
         });
         dialog.setNegativeButton(android.R.string.cancel, (d, id) -> {});
+        dialog.show();
+    }
+
+    private void newGameDialog(String title) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(title);
+        dialog.setMessage("Would you like to start a new game?");
+        dialog.setPositiveButton("Yes", (d, id) -> {
+            tileDialog();
+        });
+        dialog.setNegativeButton("No", (d, id) -> {});
         dialog.show();
     }
 
