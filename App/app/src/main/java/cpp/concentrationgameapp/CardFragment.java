@@ -30,7 +30,8 @@ public class CardFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle args = getArguments();
-        word = args.getString("word");
+//        word = args.getString("word");
+        word = "Hello world!";
         System.out.println(getId());
 
         return inflater.inflate(R.layout.card_fragment, container, false);

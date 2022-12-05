@@ -7,14 +7,302 @@
     android:background="#5E936565"
     tools:context=".GameActivity">
 
-
-    <Button
-        android:id="@+id/toggleSoundButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/onOffMusic"
+    <LinearLayout
+        android:id="@+id/card_row_0"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="64dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/card_row_1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_0x0"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_0x1"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_0x2"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_0x3"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/card_row_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/card_row_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_row_0">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_1x0"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_1x1"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_1x2"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_1x3"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/card_row_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/card_row_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_row_1">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_2x0"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_2x1"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_2x2"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_2x3"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/card_row_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/card_row_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_row_2">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_3x0"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_3x1"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_3x2"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_3x3"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/card_row_4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="64dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/constraintLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_row_3">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_4x0"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_4x1"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_4x2"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/card_4x3"
+            android:name="cpp.concentrationgameapp.CardFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.25"
+            tools:layout="@layout/card_fragment" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
@@ -63,5 +351,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/toggleSoundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/onOffMusic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
