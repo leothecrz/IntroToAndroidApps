@@ -16,10 +16,12 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TableRow;
@@ -191,7 +193,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 card2 = null;
 
                 if (checkPlayerWon()) {
-                    Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "You won!", Toast.LENGTH_LONG).show();
+                    highScoreDialog();
                 }
             } else {
                 if (score > 0)
@@ -235,6 +238,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         card1 = null;
         card2 = null;
+        disableFlip = false;
 
         // Set visibility of cards based on tile count
         switch (tileCount) {
@@ -364,8 +368,34 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setScore(0);
     }
 
+    private void highScoreDialog() {
+        HighScoreTable highScoreTable = HighScoreTable.getInstance();
+        if (highScoreTable.isHighScore(tileCount, score)) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setTitle("High Score");
+            dialog.setMessage("You set a high score! Enter your name:");
+
+            // Add text field to dialog
+            EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            dialog.setView(input);
+
+            dialog.setPositiveButton(android.R.string.ok, (d, id) -> {
+                String name = input.getText().toString();
+                boolean res = highScoreTable.addHighScore(name, tileCount, score);
+                if (res)
+                    Toast.makeText(this, "Added high score!", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(this, "Failed to add high score.", Toast.LENGTH_LONG).show();
+            });
+            dialog.setNegativeButton(android.R.string.cancel, (d, id) -> {});
+
+            dialog.show();
+        }
+    }
+
     private void showDialog() {
-        android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("New Game");
         dialog.setMessage("How many tiles?");
 
@@ -402,9 +432,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             tileCount = 4 + seekBar.getProgress() * 2;
             initGame();
         });
-        dialog.setNegativeButton(android.R.string.cancel, (d, id) -> {
-            // Do nothing
-        });
+        dialog.setNegativeButton(android.R.string.cancel, (d, id) -> {});
         dialog.show();
     }
 
