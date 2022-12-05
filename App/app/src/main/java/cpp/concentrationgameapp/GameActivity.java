@@ -49,6 +49,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private FragmentContainerView[][] cardContainers;
     private CardFragment[][] cards;
     private TextView scoreDisplay;
+    private TextView scoreDifference;
 
     private int tileCount;
     private int score;
@@ -71,8 +72,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         runningBeforePause = true;
 
+        // Get score displays
         scoreDisplay = findViewById(R.id.scoreText);
         scoreDisplay.setText(getResources().getString(R.string.score_label, 0));
+        scoreDifference = findViewById(R.id.scoreDifference);
+        scoreDifference.setText("+ 2");
 
         // Get buttons
         tryAgainButton = findViewById(R.id.tryAgainButton);
@@ -240,36 +244,44 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (card1 == null) {
             // First card was clicked
             card1 = fragment;
-        } else if (card2 == null && card1 != fragment) {
+        } else if (card2 == null) {
+            // Player pressed first card again
+            if (fragment == card1)
+                return;
+
             // Second card was clicked
             card2 = fragment;
 
             // Check for a match
             boolean isMatch = card1.getWord().equals(card2.getWord());
             int textAnimColor; // Used for text color animation
+            boolean showScoreDifference = true;
             if (isMatch) {
-                setScore(score + 2);
-                textAnimColor = 0xFF00FF00;
+                setScore(score + 2); // Increase score
+                textAnimColor = 0xFF00FF00; // Green
                 card1.setFlippable(false);
                 card2.setFlippable(false);
                 card1 = null;
                 card2 = null;
 
                 if (checkPlayerWon()) {
-                    Toast.makeText(this, "You won!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getResources().getString(R.string.you_won),
+                            Toast.LENGTH_LONG).show();
                     highScoreDialog();
                 }
             } else {
                 if (score > 0)
-                    setScore(score - 1);
-                textAnimColor = 0xFFFF0000;
+                    setScore(score - 1); // Decrease score if it is higher than 0
+                else
+                    showScoreDifference = false;
+                textAnimColor = 0xFFFF0000; // Red
 
-                // Temporarily prevent player from flipping another card until try again is pressed
+                // Prevent player from flipping another card until try again is pressed
                 disableFlip = true;
                 tryAgainButton.setEnabled(true);
                 if (!showedTryAgainToast) {
                     Toast.makeText(this,
-                            "Incorrect pair! Press the try again button to try again.",
+                            getResources().getString(R.string.incorrect_pair_toast),
                             Toast.LENGTH_SHORT).show();
                     showedTryAgainToast = true;
                 }
@@ -277,10 +289,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             // Text color animation
             scoreDisplay.setTextColor(textAnimColor);
-            ObjectAnimator animator = ObjectAnimator.ofArgb(scoreDisplay, "textColor",
+            ObjectAnimator scoreAnimator = ObjectAnimator.ofArgb(scoreDisplay, "textColor",
                     textAnimColor, 0xFFFFFFFF);
-            animator.setDuration(3000);
-            animator.start();
+            scoreAnimator.setDuration(3000);
+            scoreAnimator.start();
+
+            if (showScoreDifference) {
+                scoreDifference.setText(getResources().getString(isMatch ? R.string.plus_score : R.string.minus_score));
+                scoreDifference.setTextColor(textAnimColor);
+                scoreDifference.setAlpha(1);
+                ObjectAnimator differenceAnimator = ObjectAnimator.ofFloat(scoreDifference, "alpha",
+                        1, 0);
+                differenceAnimator.setDuration(3000);
+                differenceAnimator.start();
+            }
         } else if (card1 == fragment) {
             // First card was clicked again
             card1 = null;
