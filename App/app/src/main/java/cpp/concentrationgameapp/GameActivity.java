@@ -71,6 +71,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Button endGameButton = findViewById(R.id.endGameButton);
         Button newGameButton = findViewById(R.id.newGameButton);
         Button toggleSoundButton = findViewById(R.id.toggleSoundButton);
+        tryAgainButton.setEnabled(false);
 
         // Set button listeners
         tryAgainButton.setOnClickListener(this);
