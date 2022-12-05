@@ -47,17 +47,17 @@ public class HomeActivity extends AppCompatActivity {
         OnClickListener homeListener = view -> {
             switch (view.getId()){
                 case (R.id.homeExitButton):{
+                    // Exit activity (quits the app)
                     this.finish();
                     break;
                 }
                 case (R.id.homePlayButton):{
-
+                    // Show dialog to let user input number of tiles
                     showDialog();
                     break;
-
                 }
                 case (R.id.homeHighScoresButton):{
-
+                    // Start high scores activity
                     Intent i = new Intent(getApplicationContext(), HighScoreActivity.class);
                     startActivity(i);
                     break;
@@ -172,18 +172,15 @@ public class HomeActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                // Set the text under the slider
                 text.setText("      " + (4 + i * 2) + " tiles");
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         layout.addView(seekBar);
 
@@ -193,6 +190,7 @@ public class HomeActivity extends AppCompatActivity {
 
         dialog.setView(layout);
         dialog.setPositiveButton(android.R.string.ok, (d, id) -> {
+            // Start game
             Intent i = new Intent(getApplicationContext(), GameActivity.class);
             i.putExtra("tiles", 4 + seekBar.getProgress() * 2);
             startActivity(i);

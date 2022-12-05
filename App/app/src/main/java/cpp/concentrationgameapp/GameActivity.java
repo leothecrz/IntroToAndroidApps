@@ -59,16 +59,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             audioHandler.play(R.raw.testtrack2, getApplicationContext());
         }
 
+        // Get buttons
         tryAgainButton = findViewById(R.id.tryAgainButton);
         endGameButton = findViewById(R.id.endGameButton);
         newGameButton = findViewById(R.id.newGameButton);
         toggleSoundButton = findViewById(R.id.toggleSoundButton);
 
+        // Set button listeners
         tryAgainButton.setOnClickListener(this);
         endGameButton.setOnClickListener(this);
         newGameButton.setOnClickListener(this);
         toggleSoundButton.setOnClickListener(this);
 
+        // Get card rows, containers, and fragments from layout
         rows = new LinearLayout[5];
         cardContainers = new FragmentContainerView[5][4];
         cards = new CardFragment[5][4];
@@ -86,9 +89,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
+        // Get tile count from intent and initialize the game
         tileCount = getIntent().getIntExtra("tiles", 4);
         initGame();
 
+        // Remove action bar
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();
         }
@@ -170,7 +175,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void initGame() {
-        // Reset visibility
+        // Reset visibility and flip state of cards
         for (LinearLayout row : rows)
             row.setVisibility(View.VISIBLE);
         for (FragmentContainerView[] cardContainers : cardContainers)
@@ -286,9 +291,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
 
-        // Set word for each card
-        List<String> wordList = Arrays.asList(WORDS);
-        List<CardFragment> cardList = new ArrayList<>(); // List of visible cards
+        // Get list of all visible cards
+        List<CardFragment> cardList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             if (rows[i].getVisibility() == View.GONE)
                 continue;
@@ -297,8 +301,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     cardList.add(cards[i][x]);
         }
 
+        // Shuffle both lists to randomize words used and card pairs
+        List<String> wordList = Arrays.asList(WORDS);
         Collections.shuffle(wordList);
         Collections.shuffle(cardList);
+
+        // Set word for each pair of cards
         for (int i = 0; i < cardList.size() / 2; i++) {
             cardList.get(i * 2).setWord(wordList.get(i));
             cardList.get(i * 2 + 1).setWord(wordList.get(i));

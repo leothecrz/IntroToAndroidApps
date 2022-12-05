@@ -26,12 +26,19 @@ public class HighScoreTable {
         highScores = new HighScore[9][3];
     }
 
+    /**
+     * @return A singleton instance of HighScoreTable
+     */
     public static HighScoreTable getInstance() {
         if (instance == null)
             instance = new HighScoreTable();
         return instance;
     }
 
+    /**
+     * Initializes the high score table. Reads JSON file if it exists.
+     * @param context The context to get the file directory from
+     */
     public void init(Context context) {
         highScoresFile = new File(context.getFilesDir(), FILENAME);
         try {
@@ -58,6 +65,12 @@ public class HighScoreTable {
         }
     }
 
+    /**
+     * Checks if the given score is a high score.
+     * @param tileCount The number of tiles to check for the score
+     * @param score The score to check
+     * @return Whether or not the given score is a high score
+     */
     public boolean isHighScore(int tileCount, int score) {
         if (score == 0)
             return false;
@@ -70,6 +83,13 @@ public class HighScoreTable {
         }
     }
 
+    /**
+     * Adds a high score to the high score table and updates the high score JSON file.
+     * @param name The name of the high score
+     * @param tileCount The number of tiles for the high score
+     * @param score The score to add
+     * @return True if the score was a high score and adding the score was successful
+     */
     public boolean addHighScore(String name, int tileCount, int score) {
         if (!isHighScore(tileCount, score))
             return false;
@@ -97,12 +117,23 @@ public class HighScoreTable {
         return true;
     }
 
+
+    /**
+     * Gets the high scores for the given tile count.
+     * @param index Index to return from the high score table
+     * @param isTileCount Set to true if index is a tile count (4, 6, 8, 10, ... 20)
+     * @return An array of high scores
+     */
     public HighScore[] getHighScores(int index, boolean isTileCount) {
         return highScores[isTileCount ? tileCountToIndex(index) : index];
     }
 
+    /**
+     * Resets the high score table and updates the JSON file.
+     */
     public void clear() {
         highScores = new HighScore[9][3];
+        save();
     }
 
     private void save() {
@@ -133,6 +164,12 @@ public class HighScoreTable {
         return -1;
     }
 
+    /**
+     * Converts a tile count (4, 6, 8, 10, ... 20) to an index (0, 1, 2, 3, ... 8) to access the
+     * high score table.
+     * @param tileCount The tile count to convert
+     * @return An index
+     */
     public int tileCountToIndex(int tileCount) {
         return (tileCount - 4) / 2;
     }
