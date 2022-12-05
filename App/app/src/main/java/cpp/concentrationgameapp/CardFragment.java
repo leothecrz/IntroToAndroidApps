@@ -1,7 +1,10 @@
 package cpp.concentrationgameapp;
 
 import android.animation.ObjectAnimator;
+import android.content.res.Configuration;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ public class CardFragment extends Fragment implements View.OnClickListener {
     private String word;
     private TextView textView;
     private ImageView cardBack;
+    private ImageView cardBackground;
     private boolean flipped;
     private OnCardClickListener clickListener;
 
@@ -36,6 +40,8 @@ public class CardFragment extends Fragment implements View.OnClickListener {
         textView = view.findViewById(R.id.word);
         textView.setText(word);
         cardBack = view.findViewById(R.id.cardBack);
+        cardBackground = view.findViewById(R.id.cardBackground);
+        updateRotation(getResources().getConfiguration());
         view.setOnClickListener(this);
     }
 
@@ -76,7 +82,28 @@ public class CardFragment extends Fragment implements View.OnClickListener {
             textView.setText(word);
     }
 
+    public void rotate(float rotation) {
+        cardBack.setRotation(rotation);
+        cardBackground.setRotation(rotation);
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        updateRotation(newConfig);
+    }
+
+    private void updateRotation(Configuration config) {
+        if (cardBack != null) {
+            float rotation = config.orientation == Configuration.ORIENTATION_LANDSCAPE ? 90 : 0;
+            cardBack.setRotation(rotation);
+            cardBackground.setRotation(rotation);
+        }
+    }
+
     public interface OnCardClickListener {
         void onCardClick(CardFragment fragment);
     }
+
+
 }
