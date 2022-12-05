@@ -46,6 +46,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout[] rows;
     private FragmentContainerView[][] cardContainers;
     private CardFragment[][] cards;
+    private TextView scoreDisplay;
 
     private int tileCount;
 
@@ -58,6 +59,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if(!audioHandler.isRunningStatus()){
             audioHandler.play(R.raw.testtrack2, getApplicationContext());
         }
+
+        scoreDisplay = findViewById(R.id.scoreText);
+        scoreDisplay.setText("Score: 0");
 
         // Get buttons
         tryAgainButton = findViewById(R.id.tryAgainButton);
