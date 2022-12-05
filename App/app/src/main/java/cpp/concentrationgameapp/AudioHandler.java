@@ -4,11 +4,13 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.Log;
 
+import java.io.IOException;
+
 public class AudioHandler {
 
     private static AudioHandler audioHandler;
 
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
     static int mediaStopTime;
     private boolean enabled;
 
@@ -16,6 +18,9 @@ public class AudioHandler {
      * Constructor
      */
     private AudioHandler(){
+        if(mediaPlayer !=null){
+            mediaPlayer.release();
+        }
         enabled = true;
     }
 
@@ -42,6 +47,7 @@ public class AudioHandler {
 
             Log.i("AudioHandlerInformation", String.valueOf(mediaStopTime));
 
+            mediaPlayer.reset();
             mediaPlayer.release();
             mediaPlayer = null;
             return true;
@@ -56,10 +62,7 @@ public class AudioHandler {
      */
     public void play(Context c){
 
-        if(mediaPlayer != null){
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
+        releaseMediaPlayer();
 
         mediaPlayer = MediaPlayer.create(c, R.raw.test8bit);
         mediaPlayer.setLooping(true);
@@ -75,10 +78,7 @@ public class AudioHandler {
         if (!enabled)
             return;
 
-        if(mediaPlayer != null){
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
+        releaseMediaPlayer();
 
         mediaPlayer = MediaPlayer.create(c, musicID);
         mediaPlayer.setLooping(true);
@@ -95,10 +95,7 @@ public class AudioHandler {
         if (!enabled)
             return;
 
-        if(mediaPlayer != null){
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
+        releaseMediaPlayer();
         
         mediaPlayer = MediaPlayer.create(c, R.raw.test8bit);
         mediaPlayer.setLooping(true);
@@ -108,6 +105,38 @@ public class AudioHandler {
 
         mediaPlayer.start();
     }
+
+    /**
+     * Play the track with the ID = musicID in res/raw.
+     * Skip to position in the track.
+     * @param musicID
+     * @param c
+     * @param position
+     */
+    public void play(int musicID, Context c, int position){
+        if (!enabled)
+            return;
+
+        releaseMediaPlayer();
+
+        mediaPlayer = MediaPlayer.create(c, musicID);
+        mediaPlayer.setLooping(true);
+
+        if(position < mediaPlayer.getDuration())
+            mediaPlayer.seekTo(position);
+
+
+        mediaPlayer.start();
+    }
+
+    private void releaseMediaPlayer(){
+        if(mediaPlayer != null){
+            mediaPlayer.reset();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
 
     /**
      * Get the status of the audioHandler.

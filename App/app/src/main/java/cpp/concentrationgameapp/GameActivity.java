@@ -40,6 +40,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     private AudioHandler audioHandler;
+    private boolean runningBeforePause;
+    private Boolean runningInPreviousSavedInstance;
+    private int mediaStopPosition;
+
     private Button tryAgainButton;
     private LinearLayout[] rows;
     private FragmentContainerView[][] cardContainers;
@@ -53,15 +57,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private CardFragment card1; // First flipped card
     private CardFragment card2; // Second flipped card
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        //Audio Initialization
         audioHandler = AudioHandler.getInstance();
-        if(!audioHandler.isRunningStatus()){
-            audioHandler.play(R.raw.testtrack2, getApplicationContext());
+        if(savedInstanceState != null) { // Saved Instance Extra Setup
+            runningInPreviousSavedInstance = savedInstanceState.getBoolean("audioShouldBeRunning", false);
+            mediaStopPosition = savedInstanceState.getInt("mediaStopTime", 0);
         }
+        runningBeforePause = true;
 
         scoreDisplay = findViewById(R.id.scoreText);
         scoreDisplay.setText(getResources().getString(R.string.score_label, 0));
@@ -128,6 +136,36 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        //AudioResume
+        if(runningBeforePause){
+            audioHandler.play(R.raw.testtrack2, getApplicationContext());
+        }
+        if(runningInPreviousSavedInstance != null){
+            if(runningInPreviousSavedInstance){
+                audioHandler.play(R.raw.testtrack2, getApplicationContext(), mediaStopPosition);
+            } else {
+                audioHandler.stop();
+            }
+            runningInPreviousSavedInstance = null;
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(audioHandler.isRunningStatus()){
+            runningBeforePause = true;
+            audioHandler.stop();
+        }else {
+            runningBeforePause = false;
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -139,13 +177,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             outState.putByteArray("card1", new byte[] { (byte)card1.getRow(), (byte)card1.getColumn() });
         if (card2 != null)
             outState.putByteArray("card2", new byte[] { (byte)card2.getRow(), (byte)card2.getColumn() });
+
+        //Audio
+        if(audioHandler.isRunningStatus() && runningBeforePause){ // Pre-Pause
+            outState.putBoolean("audioShouldBeRunning", true);
+        } else { // Post-Pause
+            outState.putBoolean("audioShouldBeRunning", runningBeforePause);
+        }
+        outState.putInt("mediaStopTime", AudioHandler.mediaStopTime);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        audioHandler.stop();
-    }
+
 
     @Override
     public void onBackPressed() {
