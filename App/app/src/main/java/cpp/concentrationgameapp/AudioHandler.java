@@ -16,7 +16,7 @@ public class AudioHandler {
      * Constructor
      */
     private AudioHandler(){
-
+        enabled = true;
     }
 
     /**
