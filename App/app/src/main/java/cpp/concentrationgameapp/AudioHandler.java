@@ -21,7 +21,7 @@ public class AudioHandler {
 
     /**
      * Singleton instance control
-     * @return
+     * @return Singleton instance of AudioHandler
      */
     public static AudioHandler getInstance(){
         if(audioHandler == null){
@@ -32,7 +32,7 @@ public class AudioHandler {
 
     /**
      * Releases the media player resource.
-     * @return True if the mediaplayer was active AND it was released. False otherwise.
+     * @return True if the mediaPlayer was active AND it was released. False otherwise.
      */
     public boolean stop(){
         if(mediaPlayer != null){
@@ -52,7 +52,7 @@ public class AudioHandler {
 
     /**
      * Default Play the test track in the res/raw.
-     * @param c
+     * @param c Context to play test track
      */
     public void play(Context c){
 
@@ -68,8 +68,8 @@ public class AudioHandler {
 
     /**
      * Play the track with the ID = musicID in res/raw.
-     * @param musicID
-     * @param c
+     * @param musicID Resource ID of the raw file
+     * @param c Context to play track
      */
     public void play(int musicID, Context c){
         if (!enabled)
@@ -86,38 +86,10 @@ public class AudioHandler {
     }
 
     /**
-     * Play the track with the ID = musicID in res/raw.
-     * Skip to position in the track.
-     * @param musicID
-     * @param c
-     * @param position
-     */
-    public void play(int musicID, Context c, int position){
-        if (!enabled)
-            return;
-
-        if(mediaPlayer != null){
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-
-        mediaPlayer = MediaPlayer.create(c, musicID);
-        mediaPlayer.setLooping(true);
-
-        Log.i("AudioHandlerInformation", "Position - D: " + String.valueOf(mediaPlayer.getDuration()) + "P: " + String.valueOf(position) );
-        if(position <  mediaPlayer.getDuration()) {
-            mediaPlayer.seekTo(position);
-        }
-
-        mediaPlayer.start();
-    }
-
-
-    /**
      * Default Play the test track in the res/raw.
-     * skip to position in the track.
-     * @param c
-     * @param position
+     * Skip to position in the track.
+     * @param c Context to play track
+     * @param position Position to start track at
      */
     public void play(Context c, int position){
         if (!enabled)
@@ -140,21 +112,10 @@ public class AudioHandler {
     /**
      * Get the status of the audioHandler.
      * When running will return true.
-     * @return
+     * @return True if AudioHandler is running
      */
     public boolean isRunningStatus(){
         return !(mediaPlayer == null);
-    }
-
-    /**
-     * @return
-     */
-    public MediaPlayer getMediaPlayer(){
-        return this.mediaPlayer;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
     }
 
     public void setEnabled(boolean enabled) {

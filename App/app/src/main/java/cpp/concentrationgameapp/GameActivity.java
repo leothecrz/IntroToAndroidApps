@@ -1,30 +1,19 @@
 package cpp.concentrationgameapp;
 
 import android.animation.ObjectAnimator;
-import android.content.Context;
-import android.content.DialogInterface;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputType;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +25,7 @@ import java.util.List;
 public class GameActivity extends AppCompatActivity implements View.OnClickListener, CardFragment.OnCardClickListener {
 
     // Keep words under 7 letters
-    private static String[] WORDS = {
+    private static final String[] WORDS = {
             "Camel",
             "Deer",
             "Fox",
@@ -51,9 +40,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private AudioHandler audioHandler;
     private Button tryAgainButton;
-    private Button endGameButton;
-    private Button newGameButton;
-    private Button toggleSoundButton;
     private LinearLayout[] rows;
     private FragmentContainerView[][] cardContainers;
     private CardFragment[][] cards;
@@ -77,13 +63,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         scoreDisplay = findViewById(R.id.scoreText);
-        scoreDisplay.setText("Score: 0");
+        scoreDisplay.setText(getResources().getString(R.string.score_label, 0));
 
         // Get buttons
         tryAgainButton = findViewById(R.id.tryAgainButton);
-        endGameButton = findViewById(R.id.endGameButton);
-        newGameButton = findViewById(R.id.newGameButton);
-        toggleSoundButton = findViewById(R.id.toggleSoundButton);
+        Button endGameButton = findViewById(R.id.endGameButton);
+        Button newGameButton = findViewById(R.id.newGameButton);
+        Button toggleSoundButton = findViewById(R.id.toggleSoundButton);
 
         // Set button listeners
         tryAgainButton.setOnClickListener(this);
@@ -134,9 +120,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         new AlertDialog.Builder(this)
                 .setTitle("Exit Game")
                 .setMessage("Are you sure you want to exit the game?")
-                .setPositiveButton(android.R.string.yes, (dialog, button) -> {
-                    GameActivity.super.onBackPressed();
-                })
+                .setPositiveButton(android.R.string.yes, (dialog, button) ->
+                        GameActivity.super.onBackPressed())
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
@@ -408,7 +393,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                text.setText("      " + (4 + i * 2) + " tiles");
+                text.setText(getResources().getString(R.string.tile_count_dialog,
+                        4 + i * 2));
             }
 
             @Override
@@ -423,7 +409,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         });
         layout.addView(seekBar);
 
-        text.setText("      4 tiles"); // Padded string to make it look nicer
+        text.setText(getResources().getString(R.string.tile_count_dialog, 4));
         text.setPadding(10, 10, 10, 10);
         layout.addView(text);
 
@@ -438,7 +424,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setScore(int score) {
         this.score = score;
-        scoreDisplay.setText("Score: " + score);
+        scoreDisplay.setText(getResources().getString(R.string.score_label, score));
     }
 
     private boolean checkPlayerWon() {

@@ -173,7 +173,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 // Set the text under the slider
-                text.setText("      " + (4 + i * 2) + " tiles");
+                text.setText(getResources().getString(R.string.tile_count_dialog,
+                        4 + i * 2));
             }
 
             @Override
@@ -184,7 +185,7 @@ public class HomeActivity extends AppCompatActivity {
         });
         layout.addView(seekBar);
 
-        text.setText("      4 tiles"); // Padded string to make it look nicer
+        text.setText(getResources().getString(R.string.tile_count_dialog, 4)); // Padded string to make it look nicer
         text.setPadding(10, 10, 10, 10);
         layout.addView(text);
 

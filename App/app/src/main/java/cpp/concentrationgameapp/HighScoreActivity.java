@@ -4,15 +4,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class HighScoreActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, View.OnClickListener {
@@ -21,8 +18,6 @@ public class HighScoreActivity extends AppCompatActivity implements
     private TextView highScore1;
     private TextView highScore2;
     private TextView highScore3;
-    private Button backButton;
-    private Button resetButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +34,8 @@ public class HighScoreActivity extends AppCompatActivity implements
         tileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tileDropdown.setAdapter(tileAdapter);
         tileDropdown.setOnItemSelectedListener(this);
-        backButton = findViewById(R.id.backButton);
-        resetButton = findViewById(R.id.resetButton);
+        Button backButton = findViewById(R.id.backButton);
+        Button resetButton = findViewById(R.id.resetButton);
         backButton.setOnClickListener(this);
         resetButton.setOnClickListener(this);
 
@@ -95,7 +90,7 @@ public class HighScoreActivity extends AppCompatActivity implements
 
         if (scores[0] == null) {
             // No high scores for the given tile count
-            highScore1.setText("No high scores.");
+            highScore1.setText(R.string.no_high_scores);
             highScore2.setVisibility(View.GONE);
             highScore3.setVisibility(View.GONE);
             return;
@@ -105,10 +100,13 @@ public class HighScoreActivity extends AppCompatActivity implements
         for (int x = 0; x < scores.length; x++) {
             HighScore score = scores[x];
             TextView scoreView = getHighScoreView(x);
+            if (scoreView == null)
+                return;
             scoreView.setVisibility(View.VISIBLE);
-            scoreView.setText((x + 1) + ". " + (score != null
-                    ? (score.getName() + " - " + score.getScore())
-                    : "[empty]"));
+            scoreView.setText(getResources().getString(R.string.high_score,
+                    x + 1, score != null
+                            ? (score.getName() + " - " + score.getScore())
+                            : "[empty]"));
         }
     }
 

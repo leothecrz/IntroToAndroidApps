@@ -5,9 +5,9 @@ import org.json.JSONObject;
 
 public class HighScore {
 
-    private String name;
-    private int score;
-    private int tileCount;
+    private final String name;
+    private final int score;
+    private final int tileCount;
 
     public HighScore(String name, int score, int tileCount) {
         this.name = name;
