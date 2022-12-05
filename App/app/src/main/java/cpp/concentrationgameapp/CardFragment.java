@@ -21,12 +21,22 @@ public class CardFragment extends Fragment implements View.OnClickListener {
     private ImageView cardBackground;
     private boolean flipped;
     private boolean flippable;
+    private int row;
+    private int column;
     private OnCardClickListener clickListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("word", word);
+        outState.putBoolean("flipped", flipped);
+        outState.putBoolean("flippable", flippable);
     }
 
     @Override
@@ -42,8 +52,15 @@ public class CardFragment extends Fragment implements View.OnClickListener {
         textView.setText(word);
         cardBack = view.findViewById(R.id.cardBack);
         cardBackground = view.findViewById(R.id.cardBackground);
-        updateRotation(getResources().getConfiguration());
         view.setOnClickListener(this);
+
+        if (savedInstanceState != null) {
+            setWord(savedInstanceState.getString("word"));
+            flipped = savedInstanceState.getBoolean("flipped", flipped);
+            flippable = savedInstanceState.getBoolean("flippable", flippable);
+            if (flipped)
+                cardBack.setAlpha(0.0f);
+        }
     }
 
     @Override
@@ -90,18 +107,17 @@ public class CardFragment extends Fragment implements View.OnClickListener {
         this.flippable = flippable;
     }
 
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        updateRotation(newConfig);
+    public void setPosition(int row, int column) {
+        this.row = row;
+        this.column = column;
     }
 
-    private void updateRotation(Configuration config) {
-        if (cardBack != null) {
-            float rotation = config.orientation == Configuration.ORIENTATION_LANDSCAPE ? 90 : 0;
-            cardBack.setRotation(rotation);
-            cardBackground.setRotation(rotation);
-        }
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
     }
 
     public interface OnCardClickListener {

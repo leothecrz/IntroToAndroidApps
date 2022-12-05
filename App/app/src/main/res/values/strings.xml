@@ -31,7 +31,7 @@
     <string name="card_background">Card background</string>
     <string name="reset">Reset</string>
     <string name="no_high_scores">No high scores.</string>
-    <string name="high_score">%1d. %2sd</string>
+    <string name="high_score">%1d. %2s</string>
     <string name="score_label">Score: %1d</string>
     <string name="tile_count_dialog">"      %1d tiles"</string>
 

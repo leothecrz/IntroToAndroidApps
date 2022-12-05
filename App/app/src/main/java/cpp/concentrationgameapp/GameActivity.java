@@ -2,6 +2,7 @@ package cpp.concentrationgameapp;
 
 import android.animation.ObjectAnimator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentContainerView;
@@ -92,17 +93,51 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                         res.getIdentifier("card_" + y + "x" + x, "id",
                                 getPackageName()));
                 cards[y][x].setClickListener(this);
+                cards[y][x].setPosition(y, x);
             }
         }
 
-        // Get tile count from intent and initialize the game
-        tileCount = getIntent().getIntExtra("tiles", 4);
-        initGame();
+        if (savedInstanceState != null) {
+            // Restore state from bundle
+            tileCount = savedInstanceState.getInt("tileCount");
+            setScore(savedInstanceState.getInt("score"));
+            disableFlip = savedInstanceState.getBoolean("disableFlip");
+            showedTryAgainToast = savedInstanceState.getBoolean("showedTryAgainToast");
+            if (savedInstanceState.containsKey("card1")) {
+                byte[] card1Pos = savedInstanceState.getByteArray("card1");
+                card1 = cards[card1Pos[0]][card1Pos[1]];
+            }
+            if (savedInstanceState.containsKey("card2")) {
+                byte[] card2Pos = savedInstanceState.getByteArray("card2");
+                card2 = cards[card2Pos[0]][card2Pos[1]];
+            }
+            if (disableFlip)
+                tryAgainButton.setEnabled(true);
+            updateViews();
+        } else {
+            // Get tile count from intent and initialize the game
+            tileCount = getIntent().getIntExtra("tiles", 4);
+            initGame();
+        }
 
         // Remove action bar
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("tileCount", tileCount);
+        outState.putInt("score", score);
+        outState.putBoolean("disableFlip", disableFlip);
+        outState.putBoolean("showedTryAgainToast", showedTryAgainToast);
+        if (card1 != null)
+            outState.putByteArray("card1", new byte[] { (byte)card1.getRow(), (byte)card1.getColumn() });
+        if (card2 != null)
+            outState.putByteArray("card2", new byte[] { (byte)card2.getRow(), (byte)card2.getColumn() });
     }
 
     @Override
@@ -203,12 +238,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     textAnimColor, 0xFFFFFFFF);
             animator.setDuration(3000);
             animator.start();
+        } else if (card1 == fragment) {
+            // First card was clicked again
+            card1 = null;
         }
 
         fragment.flip();
     }
 
-    public void initGame() {
+    private void updateViews() {
         // Reset visibility and flip state of cards
         for (LinearLayout row : rows)
             row.setVisibility(View.VISIBLE);
@@ -221,9 +259,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 if (card.isFlipped())
                     card.flip();
             }
-        card1 = null;
-        card2 = null;
-        disableFlip = false;
 
         // Set visibility of cards based on tile count
         switch (tileCount) {
@@ -327,6 +362,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 // x x x x
                 break;
         }
+    }
+
+    private void initGame() {
+        updateViews();
+        card1 = null;
+        card2 = null;
+        disableFlip = false;
+        tryAgainButton.setEnabled(false);
 
         // Get list of all visible cards
         List<CardFragment> cardList = new ArrayList<>();

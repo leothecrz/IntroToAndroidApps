@@ -19,8 +19,7 @@
             android:exported="false" />
         <activity
             android:name=".GameActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize">
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

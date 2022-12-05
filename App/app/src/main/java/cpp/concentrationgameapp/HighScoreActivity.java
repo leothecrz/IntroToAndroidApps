@@ -51,7 +51,7 @@ public class HighScoreActivity extends AppCompatActivity implements
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+        updateTextViews(i);
     }
 
     @Override
@@ -82,7 +82,6 @@ public class HighScoreActivity extends AppCompatActivity implements
                 resetDialog();
                 break;
         }
-
     }
 
     private void updateTextViews(int i) {
