@@ -7,8 +7,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentContainerView;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +47,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int mediaStopPosition;
 
     private Button tryAgainButton;
+    private Button endGameButton;
+    private Button newGameButton;
     private LinearLayout[] rows;
     private FragmentContainerView[][] cardContainers;
     private CardFragment[][] cards;
@@ -80,8 +84,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         // Get buttons
         tryAgainButton = findViewById(R.id.tryAgainButton);
-        Button endGameButton = findViewById(R.id.endGameButton);
-        Button newGameButton = findViewById(R.id.newGameButton);
+        endGameButton = findViewById(R.id.endGameButton);
+        newGameButton = findViewById(R.id.newGameButton);
         Button toggleSoundButton = findViewById(R.id.toggleSoundButton);
         tryAgainButton.setEnabled(false);
 
@@ -199,10 +203,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public void exitDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Exit Game")
-                .setMessage("Are you sure you want to exit the game?")
-                .setPositiveButton(android.R.string.yes, (dialog, button) ->
-                        GameActivity.super.onBackPressed())
+                .setTitle("End Game")
+                .setMessage("Are you sure you want to end the game?")
+                .setPositiveButton(android.R.string.yes, (dialog, button) -> {
+                    for (CardFragment card : getVisibleCards()) {
+                        if (!card.isFlipped())
+                            card.flip();
+                        card.setFlippable(false);
+                    }
+                    tryAgainButton.setEnabled(false);
+                    newGameButton.setEnabled(false);
+                    endGameButton.setEnabled(false);
+
+                    new Handler().postDelayed(
+                            GameActivity.super::onBackPressed, 5000
+                    );
+                })
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
@@ -545,7 +561,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private boolean checkPlayerWon() {
-        // Get list of all visible cards
+        // Flippable card = player has not won
+        for (CardFragment card : getVisibleCards())
+            if (card.isFlippable())
+                return false;
+
+        // None of the cards can be flipped; player won
+        return true;
+    }
+
+    private List<CardFragment> getVisibleCards() {
         List<CardFragment> cardList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             if (rows[i].getVisibility() == View.GONE)
@@ -554,13 +579,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 if (cardContainers[i][x].getVisibility() == View.VISIBLE)
                     cardList.add(cards[i][x]);
         }
-
-        // Flippable card = player has not won
-        for (CardFragment card : cardList)
-            if (card.isFlippable())
-                return false;
-
-        // None of the cards can be flipped; player won
-        return true;
+        return cardList;
     }
 }
